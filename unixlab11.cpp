@@ -12,11 +12,12 @@ struct Job {
 };
 
 // Function to display the memory allocation
-void displayAllocation(const vector<int>& partitions, const vector<Job>& jobs) {
+void displayAllocation(const vector<int>& initialPartitions, const vector<int>& partitions, const vector<Job>& jobs) {
     cout << "\nInitial Memory Allocation:\n";
-    for (size_t i = 0; i < partitions.size(); ++i) {
-        cout << "Partition " << i + 1 << ": " << partitions[i] << " KB\n";
+    for (size_t i = 0; i < initialPartitions.size(); ++i) {
+        cout << "Partition " << i + 1 << ": " << initialPartitions[i] << " KB\n";
     }
+
     cout << "\nJobs Allocation:\n";
     for (size_t i = 0; i < jobs.size(); ++i) {
         cout << "Job " << i + 1 << " (Size: " << jobs[i].size << " KB) - Status: " << jobs[i].status;
@@ -24,6 +25,11 @@ void displayAllocation(const vector<int>& partitions, const vector<Job>& jobs) {
             cout << " - Partition: " << jobs[i].partition + 1;
         }
         cout << endl;
+    }
+
+    cout << "\nRemaining Memory in Partitions:\n";
+    for (size_t i = 0; i < partitions.size(); ++i) {
+        cout << "Partition " << i + 1 << ": " << partitions[i] << " KB\n";
     }
 }
 
@@ -51,9 +57,11 @@ int main() {
     cin >> numPartitions;
     
     vector<int> partitions(numPartitions);
+    vector<int> initialPartitions(numPartitions);
     cout << "Enter the sizes of partitions: ";
     for (int i = 0; i < numPartitions; ++i) {
         cin >> partitions[i];
+        initialPartitions[i] = partitions[i];
     }
     
     cout << "Enter the number of jobs: ";
@@ -68,7 +76,7 @@ int main() {
     }
     
     firstFitMemoryAllocation(partitions, jobs);
-    displayAllocation(partitions, jobs);
+    displayAllocation(initialPartitions, partitions, jobs);
     
     // Display memory waste
     int memoryWaste = 0;
